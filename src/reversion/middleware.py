@@ -19,7 +19,8 @@ class RevisionMiddleware(object):  # pragma: no cover
         if request.META.get(REVISION_MIDDLEWARE_FLAG, False):
             raise ImproperlyConfigured("RevisionMiddleware can only be included in MIDDLEWARE_CLASSES once.")
         request.META[REVISION_MIDDLEWARE_FLAG] = True
-        revision_context_manager.start()
+	if request.method.lower() != 'get':
+	    revision_context_manager.start()
 
     def _close_revision(self, request):
         """Closes the revision."""
